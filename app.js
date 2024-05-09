@@ -8,3 +8,22 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+let counter = 0;
+
+function incrementCounter() {
+    counter++;
+    updateCounterDisplay();
+}
+
+function decrementCounter() {
+    if (counter > 0) {
+        counter--;
+        updateCounterDisplay();
+    }
+}
+
+function updateCounterDisplay() {
+    const counterElement = document.getElementById('counter');
+    counterElement.textContent = counter;
+}

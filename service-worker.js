@@ -15,6 +15,7 @@ self.addEventListener('install', function(event) {
                     '/images/icons/icon-384x384.png',
                     '/images/icons/icon-512x512.png',
                     '/images/god.jpg',
+                    '/app.js'
                 ]);
             })
     );
@@ -30,32 +31,32 @@ self.addEventListener('fetch', function(event) {
 });
 
 
-self.addEventListener('fetch', event => {
-    const {request} = event;
-    const url = new URL(request.url);
-    if(url.origin === location.origin) {
-        event.respondWith(cacheData(request));
-    } else {
-        event.respondWith(networkFirst(request));
-    }
+// self.addEventListener('fetch', event => {
+//     const {request} = event;
+//     const url = new URL(request.url);
+//     if(url.origin === location.origin) {
+//         event.respondWith(cacheData(request));
+//     } else {
+//         event.respondWith(networkFirst(request));
+//     }
 
-});
+// });
 
-async function cacheData(request) {
-    const cachedResponse = await caches.match(request);
-    return cachedResponse || fetch(request);
-}
+// async function cacheData(request) {
+//     const cachedResponse = await caches.match(request);
+//     return cachedResponse || fetch(request);
+// }
 
-async function networkFirst(request) {
-    const cache = await caches.open('dynamic-meme');
+// async function networkFirst(request) {
+//     const cache = await caches.open('dynamic-meme');
 
-    try {
-        const response = await fetch(request);
-        cache.put(request, response.clone());
-        return response;
-    } catch (error){
-        return await cache.match(request);
+//     try {
+//         const response = await fetch(request);
+//         cache.put(request, response.clone());
+//         return response;
+//     } catch (error){
+//         return await cache.match(request);
 
-    }
+//     }
 
-}
+// }
