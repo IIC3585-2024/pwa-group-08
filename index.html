@@ -3,20 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPPORTUNA</title>
+    <title></title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to OPPORTUNA!</h1>
-    <p>This is your Progressive Web App.</p>
-
-    <p>Counter: <span id="counter">0</span></p>
-
-    <button onclick="incrementCounter()">Increment</button>
-    <button onclick="decrementCounter()">Decrement</button>
-
-    <img src="/images/god.jpg" alt="God Image">
+    
+      
+    <div id="sideMenu" class="sideMenu">
+        <a href="javascript:void(0)"
+            class="closeBtn"
+            onclick="closeNav()">×</a>
+        <div class="mainMenu">
+            <h2>SideMenu</h2>
+            <a href="javascript:void(0)"
+                onclick="showContent('Home')">EVENTOS</a>
+            <a href="javascript:void(0)"
+                onclick="showContent('About')">SERES HUMANOS</a>
+            <a href="javascript:void(0)"
+                onclick="showContent('Portfolio')">VINI</a>
+            <a href="javascript:void(0)"
+                onclick="showContent('Services')">Services</a>
+            <a href="javascript:void(0)"
+                onclick="showContent('Contact')">Contact</a>
+        </div>
+    </div>
+    <div id="contentArea">
+        <span style="font-size: 30px; cursor: pointer"
+            onclick="openNav()">☰</span>
+        <div class="contentText">
+            <h2 id="contentTitle">
+                BALANCE DEUDAS APP GOD</h2>
+            <h3>TE ODIO VINI ME HICISTE PERDER LUCA</h3>
+        </div>
+        <div id="event-list"></div>
+        <button id="init-dummy-data">Initialize Dummy Data</button>
+        <div id="eventsList"></div>
+    </div>
+    <script src="/app.js"></script>
+    <script src="/indexedDB.js"></script>
+    <script src="/dummyData.js"></script>
 </body>
 </html>
 
-<script src="/app.js"></script>
