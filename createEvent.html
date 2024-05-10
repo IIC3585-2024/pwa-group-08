@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event</title>
+  <link rel="stylesheet" href="eventFormStyles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Create Event</h1>
+    <form id="eventForm">
+      <div class="form-group">
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" name="eventName" required>
+      </div>
+      <div class="form-group" id="attendeesContainer">
+        <label>Attendees:</label>
+        <div class="participant">
+          <input type="text" class="participantName" name="attendees[]" placeholder="Enter name" required>
+          <button type="button" class="removeParticipant">x</button>
+        </div>
+        <div class="participant">
+          <input type="text" class="participantName" name="attendees[]" placeholder="Enter name" required>
+          <button type="button" class="removeParticipant">x</button>
+        </div>
+        <button type="button" id="addParticipant">Add Participant</button>
+      </div>
+      <button type="submit" id="createEventBtn">Create Event</button>
+    </form>
+  </div>
+  <script src="/app.js"></script>
+  <script src="indexedDB.js"></script>
+  <script src="createEvent.js"></script>
+</body>
+</html>

@@ -78,12 +78,12 @@ async function addDummyData() {
     const clearRequest = store.clear();
 
     clearRequest.onsuccess = function() {
-        console.log('Previous events cleared successfully');
+        console.log('Previous events cleared successfullyaaa');
         
         // Add new events
         const dummyEvents = [
             {
-                name: 'Event 1',
+                name: 'Event 1aa',
                 people: ['Person A', 'Person B', 'Person C'],
                 transactions: [
                     {
@@ -135,5 +135,27 @@ async function addDummyData() {
     };
 }
 
-// Call addDummyData when the button is clicked
-document.getElementById('init-dummy-data').addEventListener('click', addDummyData);
+function addEventToDB(eventName, participantNames) {
+    const transaction = db.transaction('events', 'readwrite');
+    const store = transaction.objectStore('events');
+
+    // Define the event object
+    const event = {
+        name: eventName,
+        participants: participantNames
+    };
+
+    // Add the event object to the object store
+    const request = store.add(event);
+
+    request.onsuccess = function(event) {
+        console.log('Event created and added successfully:', event.target.result);
+        // Render the updated events list
+        getAndRenderEvents();
+    };
+
+    request.onerror = function(event) {
+        console.error('Error creating event:', event.target.error);
+    };
+}
+
