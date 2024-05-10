@@ -57,25 +57,6 @@ request.onerror = (event) => {
     console.error('IndexedDB error:', event.target.error);
 };
 
-function getAndRenderEvents() {
-    const transaction = db.transaction('events', 'readonly');
-    const store = transaction.objectStore('events');
-
-    const request = store.getAll();
-
-    request.onsuccess = function(event) {
-        const events = event.target.result;
-        console.log('Events retrieved successfully:', events);
-
-        // Render the events on the page
-        renderEvents(events);
-    };
-
-    request.onerror = function(event) {
-        console.error('Error getting events:', event.target.error);
-    };
-}
-
 
 // Function to render events on the page
 function renderEvents(events) {

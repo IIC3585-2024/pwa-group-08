@@ -6,6 +6,7 @@ self.addEventListener('install', function(event) {
                 return cache.addAll([
                     '/',
                     '/index.html',
+                    '/eventos.html',
                     '/images/icons/icon-72x72.png',
                     '/images/icons/icon-96x96.png',
                     '/images/icons/icon-128x128.png',
@@ -15,7 +16,9 @@ self.addEventListener('install', function(event) {
                     '/images/icons/icon-384x384.png',
                     '/images/icons/icon-512x512.png',
                     '/images/god.jpg',
-                    '/app.js'
+                    '/app.js',
+                    '/indexedDB.js',
+                    '/styles.css',
                 ]);
             })
     );
@@ -30,33 +33,19 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
+// Se supone que estas funciones deberia hacer que se acctualice sola la pagina cuando haya conexion, pero no estan funcionando
+self.addEventListener('fetch', event => {
+    const {request} = event;
+    const url = new URL(request.url);
+    if(url.origin === location.origin) {
+        event.respondWith(cacheData(request));
+    } else {
+        event.respondWith(networkFirst(request));
+    }
 
-// self.addEventListener('fetch', event => {
-//     const {request} = event;
-//     const url = new URL(request.url);
-//     if(url.origin === location.origin) {
-//         event.respondWith(cacheData(request));
-//     } else {
-//         event.respondWith(networkFirst(request));
-//     }
+});
 
-// });
-
-// async function cacheData(request) {
-//     const cachedResponse = await caches.match(request);
-//     return cachedResponse || fetch(request);
-// }
-
-// async function networkFirst(request) {
-//     const cache = await caches.open('dynamic-meme');
-
-//     try {
-//         const response = await fetch(request);
-//         cache.put(request, response.clone());
-//         return response;
-//     } catch (error){
-//         return await cache.match(request);
-
-//     }
-
-// }
+async function cacheData(request) {
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || fetch(request);
+}
