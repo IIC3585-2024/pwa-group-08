@@ -23,6 +23,7 @@ self.addEventListener('install', function(event) {
                     'js/eventView.js',
                     'js/index.js',
                     'js/navBar.js',
+                    'js/firebaseConfig.js',
                     'styles/styles.css',
                     'styles/eventView.css',
                     'styles/sidebar.css',
