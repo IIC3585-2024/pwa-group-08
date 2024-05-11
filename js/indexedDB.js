@@ -70,7 +70,7 @@ async function addDummyData() {
     const clearRequest = store.clear();
 
     clearRequest.onsuccess = function() {
-        console.log('Previous events cleared successfullyaaa');
+        console.log('Previous events cleared successfully');
         
         // Add new events
         const dummyEvents = [
@@ -129,6 +129,7 @@ async function addDummyData() {
 function getEventDetailsFromDB(eventId, callback) {
     // Assuming db is already initialized and accessible globally
 
+    console.log(eventId, "eventId")
     const transaction = db.transaction('events', "readonly");
     const store = transaction.objectStore('events');
 
@@ -168,7 +169,8 @@ function addEventToDB(eventName, participantNames, callback) {
     // Define the event object
     const event = {
       name: eventName,
-      participants: participantNames
+      participants: participantNames,
+      transactions: []
     };
   
     // Add the event object to the object store
@@ -188,3 +190,37 @@ function addEventToDB(eventName, participantNames, callback) {
 
 
 
+  function addTransactionToEventInDB(eventId, newTransactionData, callback) {
+    const transaction = db.transaction('events', 'readwrite');
+    const store = transaction.objectStore('events');
+  
+    // Retrieve the event from the database
+    const getRequest = store.get(eventId);
+  
+    getRequest.onsuccess = function(event) {
+        const eventRecord = event.target.result;
+        console.log(eventRecord, "eventRecord")
+        if (eventRecord) {
+            // Append the new transaction to the event's transactions array
+            eventRecord.transactions.push(newTransactionData);
+            // Update the event in the database
+            const updateRequest = store.put(eventRecord);
+            updateRequest.onsuccess = function() {
+                console.log('Transaction added to event:', eventId);
+                callback(eventRecord);
+            };
+            updateRequest.onerror = function(event) {
+                console.error('Error adding transaction to event:', event.target.error);
+                callback(null);
+            };
+        } else {
+            console.error('Event not found for ID:', eventId);
+            callback(null);
+        }
+    };
+
+    getRequest.onerror = function(event) {
+        console.error('Error fetching event record:', event.target.error);
+        callback(null);
+    };
+}
