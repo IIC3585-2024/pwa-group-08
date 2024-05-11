@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
 </head>
 <body>
     
@@ -16,16 +17,14 @@
             onclick="closeNav()">×</a>
         <div class="mainMenu">
             <h2>SideMenu</h2>
+            <a href="createEvent.html"
+                onclick="showContent('Home')">Crear eventos</a>
             <a href="javascript:void(0)"
-                onclick="showContent('Home')">EVENTOS</a>
+                onclick="showContent('About')">Ver eventos</a>
             <a href="javascript:void(0)"
-                onclick="showContent('About')">SERES HUMANOS</a>
+                onclick="showContent('Portfolio')">Personas</a>
             <a href="javascript:void(0)"
-                onclick="showContent('Portfolio')">VINI</a>
-            <a href="javascript:void(0)"
-                onclick="showContent('Services')">Services</a>
-            <a href="javascript:void(0)"
-                onclick="showContent('Contact')">Contact</a>
+                onclick="showContent('Contact')">sobre nosotros</a>
         </div>
     </div>
     <div id="contentArea">
@@ -33,18 +32,18 @@
             onclick="openNav()">☰</span>
         <div class="contentText">
             <h2 id="contentTitle">
-                BALANCE DEUDAS APP GOD</h2>
-            <h3>TE ODIO VINI ME HICISTE PERDER LUCA</h3>
+                LEBRON MONEY</h2>
+            <h3>MANEJA TU PLATA CON EL GOAT</h3>
         </div>
         <a href="createEvent.html">Create Event</a>
         <div id="event-list"></div>
         <button id="init-dummy-data">Initialize Dummy Data</button>
         <div id="eventsList"></div>
     </div>
-    <script src="app.js"></script>
-    <script src="indexedDB.js"></script>
-    <script src="index.js"></script>
-    <script src="navBar.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/indexedDB.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/navBar.js"></script>
 </body>
 </html>
 
