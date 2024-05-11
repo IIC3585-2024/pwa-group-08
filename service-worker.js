@@ -18,6 +18,7 @@ self.addEventListener('install', function(event) {
                     '/images/god.jpg',
                     '/app.js',
                     '/indexedDB.js',
+                    '/firebaseConfig.js',
                     '/styles.css',
                 ]);
             })
