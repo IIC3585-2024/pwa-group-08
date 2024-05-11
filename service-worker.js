@@ -49,3 +49,4 @@ async function cacheData(request) {
     const cachedResponse = await caches.match(request);
     return cachedResponse || fetch(request);
 }
+
