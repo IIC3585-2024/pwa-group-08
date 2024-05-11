@@ -1,33 +1,29 @@
-
-
+// eventView.js
 window.addEventListener('databaseOpened', function() {
-    // Custom behavior for when the database is successfully opened
-    console.log("aaaa")
     const eventId = getEventIdFromURL();
     getEventDetailsFromDB(eventId, function(event) {
-        console.log(event)
         displayEventDetails(event);
-    }
-  );});
+    });
+});
 
-  function displayEventDetails(event) {
+let eventDetails;
+
+function displayEventDetails(event) {
+    eventDetails = event;
     document.getElementById('eventName').textContent = event.name;
 
-    // Display participants
+    const balances = calculateBalances(event);
     const participantsContainer = document.getElementById('participants');
     participantsContainer.innerHTML = '<h2>Participants:</h2>';
     event.participants.forEach(participant => {
         participantsContainer.innerHTML += `<div>${participant}</div>`;
     });
 
-    // Display balances (dummy data for now)
-    // You'll need to replace this with actual balance calculation logic
     participantsContainer.innerHTML += '<h2>Balances:</h2>';
     event.participants.forEach(participant => {
-        participantsContainer.innerHTML += `<div>${participant}: $100</div>`;
+        participantsContainer.innerHTML += `<div>${participant}: $${balances[participant]}</div>`;
     });
 
-    // Display transactions (dummy data for now)
     const transactionsContainer = document.getElementById('transactions');
     transactionsContainer.innerHTML = '<h2>Transactions:</h2>';
     event.transactions.forEach(transaction => {
@@ -39,36 +35,162 @@ window.addEventListener('databaseOpened', function() {
     });
 }
 
-// Dummy event data (replace with actual event data)
-const dummyEvent = {
-    name: 'Event 1',
-    participants: ['Participant 1', 'Participant 2', 'Participant 3'],
-    transactions: [
-        { description: 'Transaction 1', amount: 50, paidBy: 'Participant 1', owes: ['Participant 2', 'Participant 3'] },
-        { description: 'Transaction 2', amount: 30, paidBy: 'Participant 2', owes: ['Participant 1', 'Participant 3'] },
-        { description: 'Transaction 3', amount: 20, paidBy: 'Participant 3', owes: ['Participant 1', 'Participant 2'] }
-    ]
-};
-
-// Display event details
-// displayEventDetails(dummyEvent);
-
-// Function to add a new transaction
-document.getElementById('addTransactionBtn').addEventListener('click', function() {
-    // Implement functionality to add a new transaction
-    console.log('Add Transaction button clicked');
-});
-
 function getEventIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const eventIdString = urlParams.get('id');
-    // Parse the eventIdString to an integer
     const eventId = parseInt(eventIdString);
-    // Check if parsing was successful
     if (!isNaN(eventId)) {
         return eventId;
     } else {
-        // If parsing fails, return a default value or handle the error as needed
-        return -1; // or any default value you prefer
+        return -1;
     }
+}
+
+function updateTransactionForm(eventParticipants, paidByParticipant) {
+    const paidBySelect = document.getElementById('paidBy');
+    const owesCheckboxes = document.getElementById('owesCheckboxes');
+
+    // Clear previous options and checkboxes
+    paidBySelect.innerHTML = '';
+    owesCheckboxes.innerHTML = '';
+
+    // Add options for paidBy select element
+    eventParticipants.forEach(participant => {
+        const option = document.createElement('option');
+        option.value = participant;
+        option.textContent = participant;
+
+        paidBySelect.appendChild(option);
+    });
+
+    // Add checkboxes for owes
+    eventParticipants.forEach(participant => {
+        // Exclude the paid participant
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'owes';
+            checkbox.value = participant;
+            checkbox.id = participant;
+            const label = document.createElement('label');
+            label.htmlFor = participant;
+            label.textContent = participant;
+            owesCheckboxes.appendChild(checkbox);
+            owesCheckboxes.appendChild(label);
+            owesCheckboxes.appendChild(document.createElement('br'));
+            if (participant == paidByParticipant) { // Disable checkbox for paid participant
+                checkbox.disabled = true;
+            }
+        
+    });
+}
+
+document.getElementById('paidBy').addEventListener('change', function() {
+    const paidByParticipant = this.value;
+    const owesCheckboxes = document.querySelectorAll('input[name="owes"]');
+
+    // Disable checkboxes for paid participant
+    owesCheckboxes.forEach(checkbox => {
+        if (checkbox.value === paidByParticipant) {
+            checkbox.disabled = true;
+        } else {
+            checkbox.disabled = false;
+        }
+    });
+});
+
+// Event listener for adding transaction form
+document.getElementById('addTransactionBtn').addEventListener('click', function() {
+    // Retrieve event participants
+    const eventParticipants = eventDetails.participants;
+
+    // Get selected paidBy participant
+    const paidByParticipant = eventDetails.participants[0];
+
+    // Update transaction form with event participants and disable owed checkboxes for paid participant
+    updateTransactionForm(eventParticipants, paidByParticipant);
+
+    // Display the transaction form modal
+    document.getElementById('transactionFormContainer').style.display = 'block';
+});
+
+// Function to handle form submission and add transaction to event
+document.getElementById('transactionForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Retrieve form input values
+    const description = document.getElementById('description').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const paidBy = document.getElementById('paidBy').value;
+    const owesCheckboxes = document.querySelectorAll('input[name="owes"]:checked');
+    const owes = Array.from(owesCheckboxes).map(checkbox => checkbox.value);
+
+    // Example usage:
+    // Replace eventId with the actual ID of the event
+    const eventId = getEventIdFromURL(); // Replace with the actual event ID
+    const newTransactionData = {
+        description: description,
+        amount: amount,
+        paidBy: paidBy,
+        owes: owes
+    };
+
+    // Call the function to add transaction to event in IndexedDB
+    addTransactionToEventInDB(eventId, newTransactionData, function(updatedEventDetails) {
+        if (updatedEventDetails) {
+            console.log('Transaction added successfully. Updated event:', updatedEventDetails);
+            // Close the transaction form modal after successful addition of transaction
+            document.getElementById('transactionFormContainer').style.display = 'none';
+            displayEventDetails(updatedEventDetails);
+        } else {
+            console.error('Failed to add transaction to event.');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the close button element
+    const closeButton = document.querySelector('.close');
+
+    // Add event listener to the close button
+    closeButton.addEventListener('click', function() {
+        // Hide the modal when the close button is clicked
+        closeModal();
+    });
+});
+
+// Function to hide the modal
+function closeModal() {
+    const modal = document.querySelector('.modal');
+    modal.style.display = 'none';
+}
+
+function calculateBalances(eventDetails) {
+    const balances = {}; // Object to store participant balances
+
+    // Initialize balances for all participants to 0
+    eventDetails.participants.forEach(participant => {
+        balances[participant] = 0;
+    });
+
+    // Iterate through each transaction and update balances accordingly
+    eventDetails.transactions.forEach(transaction => {
+        const paidBy = transaction.paidBy;
+        const amount = transaction.amount;
+        const numOwes = transaction.owes.length;
+
+        // Add the total amount paid by the participant
+        balances[paidBy] += amount - amount / (numOwes + 1);
+
+        // Subtract the owed amount from each participant
+        transaction.owes.forEach(participant => {
+            balances[participant] -= amount / (numOwes + 1);
+        });
+
+        Object.keys(balances).forEach(participant => {
+            balances[participant] = Math.round(balances[participant]);
+        });
+
+    });
+
+    return balances;
 }
