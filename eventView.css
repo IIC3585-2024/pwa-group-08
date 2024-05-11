@@ -1,0 +1,18 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1, h2 {
+    margin-bottom: 10px;
+  }
+  
+  #participants, #transactions {
+    margin-bottom: 20px;
+  }
+  
+  #participants > div, #transactions > div {
+    margin-bottom: 5px;
+  }
+  
