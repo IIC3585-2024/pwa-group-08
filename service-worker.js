@@ -15,9 +15,9 @@ self.addEventListener('install', function(event) {
                     '/images/icons/icon-384x384.png',
                     '/images/icons/icon-512x512.png',
                     '/images/god.jpg',
-                    '/app.js',
-                    '/indexedDB.js',
-                    '/styles.css',
+                    '/js/app.js',
+                    '/js/indexedDB.js',
+                    '/styles/styles.css',
                 ]);
             })
     );

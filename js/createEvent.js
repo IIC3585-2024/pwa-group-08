@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     const addParticipantBtn = document.getElementById('addParticipant');
     const attendeesContainer = document.getElementById('attendeesContainer');
@@ -60,8 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
           participants.push(input.value.trim());
         }
       });
+      
       // Call the addEventToDB function from indexedDB.js
-      addEventToDB(eventName, participants);
-      console.log('Event created:', eventName, participants);
+      addEventToDB(eventName, participants, function(eventId) {
+        console.log('Event created:', eventName, participants);
+        // Navigate to eventView.html with the newly created event's ID as query parameter
+        window.location.href = `eventView.html?id=${eventId}`;
+      });
     }
   });
