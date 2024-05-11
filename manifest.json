@@ -7,6 +7,23 @@
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
+  "screenshots": [
+    {
+     "src": "images/god.jpg",
+      "sizes": "1920x1080",
+      "type": "image/jpg",
+      "form_factor": "wide",
+      "label": "Lebron"
+    },
+    {
+      "src": "images/god.jpg",
+       "sizes": "1920x1080",
+       "type": "image/jpg",
+       "form_factor": "narrow",
+       "label": "Lebron"
+     }
+  ],
+  "description": "Maneja tu plata con la ayuda de el GOAT",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",
