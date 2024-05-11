@@ -17,6 +17,7 @@ const firebaseConfig = {
   measurementId: "G-VE43M3YCT9"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -39,7 +40,7 @@ console.log('An error occurred while retrieving token. ', err);
 // - a message is received while the app has focus
 // - the user clicks on an app notification created by a service worker
 //   `messaging.onBackgroundMessage` handler.
-onMessage((payload) => {
-    console.log('Message received. ', payload);
-    // ...
-  });
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload);
+  // ...
+});
