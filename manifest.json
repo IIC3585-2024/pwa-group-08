@@ -1,9 +1,9 @@
 {
-  "name": "OPPORTUNA",
-  "short_name": "OPPO",
-  "theme_color": "#102C54",
-  "background_color": "#6F4F28",
-  "display": "browser",
+  "name": "LeBron Money",
+  "short_name": "LeBron",
+  "theme_color": "#7bbd42",
+  "background_color": "#f0e78e",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
@@ -36,11 +36,6 @@
     {
       "src": "images/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "images/icons/icon-384x384.png",
-      "sizes": "384x384",
       "type": "image/png"
     },
     {
