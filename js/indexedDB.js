@@ -5,12 +5,13 @@ let db;
 // Open or create the IndexedDB database
 const request = indexedDB.open(dbName, dbVersion);
 
-request.onsuccess = function(event) {
-    console.log('Database opened successfully');
-    db = event.target.result;
 
-    // Render events after the database is opened
-    getAndRenderEvents();
+const databaseOpenedEvent = new Event('databaseOpened');
+
+request.onsuccess = function(event) {
+  console.log('Database opened successfully');
+  db = event.target.result;
+  window.dispatchEvent(databaseOpenedEvent); // Dispatch the custom event
 };
 
 // Handle database upgrade (called when the version changes)
@@ -34,7 +35,7 @@ request.onupgradeneeded = (event) => {
 };
 
 // Handle successful database opening
-function getAndRenderEvents() {
+function getEvents(callback) {
     const transaction = db.transaction('events', 'readonly');
     const store = transaction.objectStore('events');
 
@@ -44,8 +45,8 @@ function getAndRenderEvents() {
         const events = event.target.result;
         console.log('Events retrieved successfully:', events);
 
-        // Render the events on the page
-        renderEvents(events);
+        // Call the callback function passing the retrieved events
+        callback(events);
     };
 
     request.onerror = function(event) {
@@ -59,16 +60,7 @@ request.onerror = (event) => {
 
 
 // Function to render events on the page
-function renderEvents(events) {
-    const eventList = document.getElementById('event-list');
-    eventList.innerHTML = '';
 
-    events.forEach((event) => {
-        const eventItem = document.createElement('div');
-        eventItem.textContent = event.name;
-        eventList.appendChild(eventItem);
-    });
-}
 
 async function addDummyData() {
     const transaction = db.transaction('events', 'readwrite');
@@ -127,7 +119,6 @@ async function addDummyData() {
                 console.error('Error adding event:', event.target.error);
             };
         });
-        getAndRenderEvents();
     };
 
     clearRequest.onerror = function(event) {
@@ -135,27 +126,65 @@ async function addDummyData() {
     };
 }
 
-function addEventToDB(eventName, participantNames) {
-    const transaction = db.transaction('events', 'readwrite');
+function getEventDetailsFromDB(eventId, callback) {
+    // Assuming db is already initialized and accessible globally
+
+    const transaction = db.transaction('events', "readonly");
     const store = transaction.objectStore('events');
 
+  
+    const request = store.get(eventId);
+  
+    request.onsuccess = function(event) {
+      const eventData = event.target.result;
+      console.log("eventData",eventData, event)
+      if (eventData) {
+        // Extract event details
+        const eventDetails = {
+          name: eventData.name,
+          participants: eventData.participants,
+          transactions: eventData.transactions || [] // Handle case where transactions array might be missing
+        };
+        callback(eventDetails); // Call the callback function passing the event details
+      } else {
+        console.error('Event not found for ID:', eventId);
+        // Call the callback function with null or undefined if event not found
+        callback(null);
+      }
+    };
+  
+    request.onerror = function(event) {
+      console.error('Error fetching event details:', event.target.error);
+      // Call the callback function with null or undefined in case of error
+      callback(null);
+    };
+  }
+  
+
+function addEventToDB(eventName, participantNames, callback) {
+    const transaction = db.transaction('events', 'readwrite');
+    const store = transaction.objectStore('events');
+  
     // Define the event object
     const event = {
-        name: eventName,
-        participants: participantNames
+      name: eventName,
+      participants: participantNames
     };
-
+  
     // Add the event object to the object store
     const request = store.add(event);
-
+  
     request.onsuccess = function(event) {
-        console.log('Event created and added successfully:', event.target.result);
-        // Render the updated events list
-        getAndRenderEvents();
+      const eventId = event.target.result;
+      console.log('Event created and added successfully:', eventId);
+      // Call the callback function passing the ID of the newly created event
+      callback(eventId);
     };
-
+  
     request.onerror = function(event) {
-        console.error('Error creating event:', event.target.error);
+      console.error('Error creating event:', event.target.error);
     };
-}
+  }
+
+
 
