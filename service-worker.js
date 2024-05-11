@@ -26,6 +26,7 @@ self.addEventListener('install', function(event) {
                     'styles/styles.css',
                     'styles/eventView.css',
                     'styles/sidebar.css',
+                    'styles/eventFormStyles.css',	
                 ]);
             } catch (error) {
                 console.error('Cache installation failed:', error);
