@@ -15,7 +15,6 @@
         <h2 id="pageTitle">Menú Principal</h2>
         <a href="index.html">Inicio</a>
         <a href="createEvent.html">Crear eventos</a>
-        <a href="javascript:void(0)">Ver eventos</a>
       </div>
     </div>
     <div id="contentArea">
@@ -26,17 +25,17 @@
         <h1>Crear Evento</h1>
         <form id="eventForm">
           <div class="form-group">
-            <label for="eventName">Event Name:</label>
+            <label for="eventName">Nombre del evento</label>
             <input type="text" id="eventName" name="eventName" required />
           </div>
           <div class="form-group" id="attendeesContainer">
-            <label>Attendees:</label>
+            <label>Participantes</label>
             <div class="participant">
               <input
                 type="text"
                 class="participantName"
                 name="attendees[]"
-                placeholder="Enter name"
+                placeholder="Ingresar Nombre"
                 required
               />
               <button
@@ -52,7 +51,7 @@
                 type="text"
                 class="participantName"
                 name="attendees[]"
-                placeholder="Enter name"
+                placeholder="Ingresar Nombre"
                 required
               />
               <button
@@ -63,9 +62,11 @@
                 x
               </button>
             </div>
-            <button type="button" id="addParticipant">Add Participant</button>
+            <button type="button" id="addParticipant">
+              Agregar Participante
+            </button>
           </div>
-          <button type="submit" id="createEventBtn">Create Event</button>
+          <button type="submit" id="createEventBtn">Crear Evento</button>
         </form>
       </div>
     </div>
