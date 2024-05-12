@@ -5,8 +5,8 @@
   "background_color": "#f0e78e",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/pwa-group-08/",
-  "start_url": "/pwa-group-08/",
+  "scope": "/",
+  "start_url": "/index.html",
   "screenshots": [
     {
      "src": "images/god.jpg",
