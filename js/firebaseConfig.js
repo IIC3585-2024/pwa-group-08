@@ -24,32 +24,36 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-export const messaging = getMessaging(app);
-getToken(messaging, {
-  vapidKey:
-    "BJsfJzSe96EAIRsfhMLjGwG-trA9Q_DhUwVoeS5iHOUoG4CSU0wVzds6_7Biipzms1KvLm3OhK-T0x1baVHjrys",
-})
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log("Token", currentToken);
-    } else {
-      // Show permission request UI
-      console.log(
-        "No registration token available. Request permission to generate one."
-      );
-      // ...
-    }
+const messaging = getMessaging(app);
+navigator.serviceWorker.getRegistration().then((registration) => {
+  // messaging.useServiceWorker(registration);
+  getToken(messaging, {
+    serviceWorkerRegistration: registration,
+    vapidKey:
+      "BJsfJzSe96EAIRsfhMLjGwG-trA9Q_DhUwVoeS5iHOUoG4CSU0wVzds6_7Biipzms1KvLm3OhK-T0x1baVHjrys",
   })
-  .catch((err) => {
-    console.log("An error occurred while retrieving token. ", err);
-    // ...
-  });
+    .then((currentToken) => {
+      if (currentToken) {
+        console.log("Token", currentToken);
+        /* onMessage(messaging, (payload) => {
+          console.log("Mensaje recivido. ", payload);
+          // ...
+        }); */
+      } else {
+        // Show permission request UI
+        console.log(
+          "No registration token available. Request permission to generate one."
+        );
+        // ...
+      }
+    })
+    .catch((err) => {
+      console.log("An error occurred while retrieving token. ", err);
+      // ...
+    });
+});
 
 // Handle incoming messages. Called when:
 // - a message is received while the app has focus
 // - the user clicks on an app notification created by a service worker
 //   `messaging.onBackgroundMessage` handler.
-onMessage(messaging, (payload) => {
-  console.log("Message received. ", payload);
-  // ...
-});
