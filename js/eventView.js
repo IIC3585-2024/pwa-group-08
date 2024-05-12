@@ -24,7 +24,7 @@ function displayEventDetails(event) {
   //     participantsContainer.innerHTML += `<div>${participant}: $${balances[participant]}</div>`;
   // });
   const participantsContainer = document.getElementById("participants");
-  participantsContainer.innerHTML = "<h2>Participantes and Balances</h2>";
+  participantsContainer.innerHTML = "<h2>Participantes y Balances</h2>";
   participantsContainer.innerHTML += '<div class="participants-list">';
 
   event.participants.forEach((participant) => {
