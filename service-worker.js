@@ -38,10 +38,32 @@ self.addEventListener("install", function (event) {
 });
 
 // Se supone que estas funciones deberia hacer que se acctualice sola la pagina cuando haya conexion, pero no estan funcionando
-self.addEventListener("fetch", fetchEvent => {
-  fetchEvent.respondWith(
-    caches.match(fetchEvent.request).then(res => {
-      return res || fetch(fetchEvent.request)
-    })
-  )
-})
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  // Respond with cached resources if available, otherwise fetch from network
+  event.respondWith(cacheFirst(request));
+});
+
+async function cacheFirst(request) {
+  // Check if the requested resource is in the cache
+  const cachedResponse = await caches.match(request);
+  // If it's in the cache, return the cached response
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+  // If it's not in the cache, fetch from the network
+  try {
+    const response = await fetch(request);
+    // Clone the response because it can be consumed only once
+    const clonedResponse = response.clone();
+    // Open the cache and add the fetched response for future use
+    caches.open("oppo-pwa-cache-v1").then((cache) => {
+      cache.put(request, clonedResponse);
+    });
+    return response;
+  } catch (error) {
+    // Handle fetch errors
+    console.error("Error fetching:", error);
+    throw error;
+  }
+}
