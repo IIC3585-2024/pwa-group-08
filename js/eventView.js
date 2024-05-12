@@ -235,8 +235,8 @@ document
           const payload = JSON.stringify({
             to: `${currentToken}`,
             notification: {
-              title: "LeBron",
-              body: "Grande Vini me hiciste ganar luca",
+              title: "Transacciones",
+              body: "Haz creado una nueva transacción",
             },
           });
           // Make the fetch request
@@ -249,7 +249,7 @@ document
             .then((data) => {
               console.log("Successfully sent message:", data);
               // Insert notification for user 2 seconds after the message is sent
-              showNotification();
+              // showNotification();
             })
             .catch((error) => {
               console.error("Error sending message:", error);
@@ -265,8 +265,14 @@ document
       });
   });
 
-function showNotification() {
+  onMessage(messaging, (payload) => {
+    console.log("Message received. ", payload.notification.body);
+    showNotification(payload.notification.body);
+  });
+
+function showNotification(body) {
   const notification = document.getElementById("notification");
+  notification.innerHTML = body;
   notification.classList.add("show");
   setTimeout(() => {
     notification.classList.remove("show");
