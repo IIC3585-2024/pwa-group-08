@@ -57,3 +57,30 @@
   background-color: #0056b3;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+#eventsList {
+  margin-top: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos horizontalmente */
+}
+
+.event-item {
+  background-color: #4caf50; /* Verde claro, puedes cambiar el color según tu diseño */
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 80%; /* Ajusta este valor para cambiar el ancho de los elementos */
+  max-width: 500px; /* Establece un ancho máximo para los elementos */
+}
+
+.event-item:hover {
+  background-color: #367c39; /* Un tono más oscuro al pasar el mouse */
+}
