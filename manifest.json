@@ -5,7 +5,8 @@
   "background_color": "#f0e78e",
   "display": "standalone",
   "orientation": "portrait",
-  "start_url": "index.html",
+  "scope": "/",
+  "start_url": "/",
   "screenshots": [
     {
       "src": "images/god.jpg",
