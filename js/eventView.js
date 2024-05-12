@@ -27,9 +27,17 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
-// eventView.js
-window.addEventListener("databaseOpened", async function () {
+const dbName = "my-database";
+const dbVersion = 1;
+let db;
+// Open or create the IndexedDB database
+const request = indexedDB.open(dbName, dbVersion);
+
+request.onsuccess = function (event) {
+  console.log("Database opened successfully 2");
+  db = event.target.result;
   const eventId = getEventIdFromURL();
+  console.log("Event ID:", eventId);
   getEventDetailsFromDB(eventId, async function (event) {
     try {
       await displayEventDetails(event);
@@ -37,7 +45,9 @@ window.addEventListener("databaseOpened", async function () {
       console.error("Error displaying event details:", error);
     }
   });
-});
+};
+
+// eventView.js
 
 let eventDetails;
 
