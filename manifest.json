@@ -5,11 +5,10 @@
   "background_color": "#f0e78e",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/",
+  "start_url": "index.html",
   "screenshots": [
     {
-     "src": "images/god.jpg",
+      "src": "images/god.jpg",
       "sizes": "1920x1080",
       "type": "image/jpg",
       "form_factor": "wide",
@@ -17,11 +16,11 @@
     },
     {
       "src": "images/god.jpg",
-       "sizes": "1920x1080",
-       "type": "image/jpg",
-       "form_factor": "narrow",
-       "label": "Lebron"
-     }
+      "sizes": "1920x1080",
+      "type": "image/jpg",
+      "form_factor": "narrow",
+      "label": "Lebron"
+    }
   ],
   "description": "Maneja tu plata con la ayuda de el GOAT",
   "icons": [
