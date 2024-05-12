@@ -169,3 +169,43 @@
 .bold {
   font-weight: bold;
 }
+
+.notification {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* Verde */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* Asegúrate de que no esté oculto detrás de otros elementos */
+}
+
+.notification.show {
+  display: block; /* Mostrar la notificación */
+  animation: fadein 0.1s, fadeout 0.5s 2.5s; /* Aparece, permanece, y desaparece */
+}
+
+@keyframes fadein {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 20px;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
+  }
+}

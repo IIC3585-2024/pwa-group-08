@@ -1,3 +1,32 @@
+// import { messaging } from "./firebaseConfig.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js";
+import {
+  getMessaging,
+  getToken,
+  onMessage,
+} from "https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCRw_yBOx-6O7XvGNpn7PRNShAr8aW9wxM",
+  authDomain: "lebron-money.firebaseapp.com",
+  projectId: "lebron-money",
+  storageBucket: "lebron-money.appspot.com",
+  messagingSenderId: "1048795771472",
+  appId: "1:1048795771472:web:1993246b4c0bae6ca49755",
+  measurementId: "G-VE43M3YCT9",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+export const messaging = getMessaging(app);
+
 // eventView.js
 window.addEventListener("databaseOpened", function () {
   const eventId = getEventIdFromURL();
@@ -187,7 +216,62 @@ document
         }
       }
     );
+
+    getToken(messaging, {
+      vapidKey:
+        "BJsfJzSe96EAIRsfhMLjGwG-trA9Q_DhUwVoeS5iHOUoG4CSU0wVzds6_7Biipzms1KvLm3OhK-T0x1baVHjrys",
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log("Puedo hacer el post con el token:", currentToken);
+          // Post request can go here or any other operation that requires messaging
+          const url = "https://fcm.googleapis.com/fcm/send";
+          const headers = new Headers({
+            Authorization:
+              "key=AAAA9DEZclA:APA91bEwQn-MNERilpnGNjHGWDg_lT816lweoiLXNF0jWQbczEcCk_TlRJL6sSvtiTN2amZrIkMpnQMTU6kOr7HSQDeyL15sO0g-rdfT6TCJZN7TGHkcToQKMBj8dxKKBcsVMPfhELGb",
+            "Content-Type": "application/json",
+          });
+          // Define the payload
+          const payload = JSON.stringify({
+            to: `${currentToken}`,
+            notification: {
+              title: "LeBron",
+              body: "Grande Vini me hiciste ganar luca",
+            },
+          });
+          // Make the fetch request
+          fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: payload,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Successfully sent message:", data);
+              // Insert notification for user 2 seconds after the message is sent
+              showNotification();
+            })
+            .catch((error) => {
+              console.error("Error sending message:", error);
+            });
+        } else {
+          console.log(
+            "No registration token available. Request permission to generate one."
+          );
+        }
+      })
+      .catch((err) => {
+        console.log("An error occurred while retrieving token.", err);
+      });
   });
+
+function showNotification() {
+  const notification = document.getElementById("notification");
+  notification.classList.add("show");
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000); // La notificación desaparece después de 3 segundos
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get the close button element
