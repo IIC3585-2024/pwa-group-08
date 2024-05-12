@@ -185,7 +185,7 @@
 
 .notification.show {
   display: block; /* Mostrar la notificación */
-  animation: fadein 0.1s, fadeout 0.5s 2.5s; /* Aparece, permanece, y desaparece */
+  animation: fadein 0.5s, fadeout 0.5s 2.5s; /* Aparece, permanece, y desaparece */
 }
 
 @keyframes fadein {
