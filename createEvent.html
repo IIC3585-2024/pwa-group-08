@@ -1,36 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Event</title>
-  <link rel="stylesheet" href="styles/eventFormStyles.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Create Event</h1>
-    <form id="eventForm">
-      <div class="form-group">
-        <label for="eventName">Event Name:</label>
-        <input type="text" id="eventName" name="eventName" required>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear evento</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles/sidebar.css" />
+    <link rel="stylesheet" href="styles/eventFormStyles.css" />
+  </head>
+  <body>
+    <div id="sideMenu" class="sideMenu">
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeNav()">×</a>
+      <div class="mainMenu">
+        <h2 id="pageTitle">Menú Principal</h2>
+        <a href="/">Inicio</a>
+        <a href="createEvent.html">Crear eventos</a>
+        <a href="javascript:void(0)">Ver eventos</a>
       </div>
-      <div class="form-group" id="attendeesContainer">
-        <label>Attendees:</label>
-        <div class="participant">
-          <input type="text" class="participantName" name="attendees[]" placeholder="Enter name" required>
-          <button type="button" class="removeParticipant">x</button>
-        </div>
-        <div class="participant">
-          <input type="text" class="participantName" name="attendees[]" placeholder="Enter name" required>
-          <button type="button" class="removeParticipant">x</button>
-        </div>
-        <button type="button" id="addParticipant">Add Participant</button>
+    </div>
+    <div id="contentArea">
+      <span style="font-size: 30px; cursor: pointer" onclick="openNav()"
+        >☰</span
+      >
+      <div class="container">
+        <h1>Crear Evento</h1>
+        <form id="eventForm">
+          <div class="form-group">
+            <label for="eventName">Event Name:</label>
+            <input type="text" id="eventName" name="eventName" required />
+          </div>
+          <div class="form-group" id="attendeesContainer">
+            <label>Attendees:</label>
+            <div class="participant">
+              <input
+                type="text"
+                class="participantName"
+                name="attendees[]"
+                placeholder="Enter name"
+                required
+              />
+              <button
+                type="button"
+                class="removeParticipant"
+                id="unremovableParticipant"
+              >
+                x
+              </button>
+            </div>
+            <div class="participant">
+              <input
+                type="text"
+                class="participantName"
+                name="attendees[]"
+                placeholder="Enter name"
+                required
+              />
+              <button
+                type="button"
+                class="removeParticipant"
+                id="unremovableParticipant"
+              >
+                x
+              </button>
+            </div>
+            <button type="button" id="addParticipant">Add Participant</button>
+          </div>
+          <button type="submit" id="createEventBtn">Create Event</button>
+        </form>
       </div>
-      <button type="submit" id="createEventBtn">Create Event</button>
-    </form>
-  </div>
-  <script src="js/app.js"></script>
-  <script src="js/indexedDB.js"></script>
-  <script src="js/createEvent.js"></script>
-</body>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/indexedDB.js"></script>
+    <script src="js/navBar.js"></script>
+    <script type="module" src="js/firebaseConfig.js"></script>
+    <script src="js/createEvent.js"></script>
+  </body>
 </html>

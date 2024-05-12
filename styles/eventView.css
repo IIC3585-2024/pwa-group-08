@@ -8,7 +8,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4); /* Overlay background */
+  background-color: rgba(0, 0, 0, 0.4); /* Overlay background */
 }
 
 .modal-content {
@@ -17,7 +17,7 @@
   padding: 20px;
   border: 1px solid #888;
   width: 60%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Close button style */
@@ -45,7 +45,7 @@
 
 /* Styles for the add transaction button */
 .btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -79,7 +79,7 @@
 }
 
 #transactionForm button[type="submit"] {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -103,4 +103,109 @@
 
 #owesCheckboxes label {
   margin-right: 15px;
+}
+
+.participants-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.participant-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.participant-name {
+  flex-grow: 1;
+}
+
+.participant-balance {
+  min-width: 100px;
+  text-align: right;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.positive {
+  background-color: #4caf50; /* Verde para balances positivos */
+  color: white; /* Texto blanco para mejor contraste */
+}
+
+.negative {
+  background-color: #f44336; /* Rojo para balances negativos */
+  color: white; /* Texto blanco para mejor contraste */
+}
+
+.transaction-card {
+  background-color: #bee8ed; /* Fondo azul claro */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex; /* Usamos flexbox para dividir la tarjeta en dos columnas */
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.transaction-details {
+  flex: 3; /* Toma la mayor parte del espacio */
+}
+
+.transaction-amount {
+  flex: 1; /* Columna más estrecha para los montos */
+  text-align: right; /* Alinea los montos a la derecha */
+  font-size: 18px;
+  font-weight: bold; /* Texto en negrita para los montos */
+}
+
+.transaction-details div {
+  margin-bottom: 5px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.notification {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* Verde */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* Asegúrate de que no esté oculto detrás de otros elementos */
+}
+
+.notification.show {
+  display: block; /* Mostrar la notificación */
+  animation: fadein 0.5s, fadeout 0.5s 2.5s; /* Aparece, permanece, y desaparece */
+}
+
+@keyframes fadein {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 20px;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
+  }
 }
