@@ -5,7 +5,6 @@ self.addEventListener("install", function (event) {
         const cache = await caches.open("oppo-pwa-cache-v1");
         await cache.addAll([
           "",
-          "/",
           "index.html",
           "createEvent.html",
           "eventView.html",
