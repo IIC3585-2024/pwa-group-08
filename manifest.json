@@ -6,7 +6,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/pwa-group-04",
   "screenshots": [
     {
      "src": "images/god.jpg",
