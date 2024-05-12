@@ -28,67 +28,68 @@ const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
 // eventView.js
-window.addEventListener("databaseOpened", function () {
+window.addEventListener("databaseOpened", async function () {
   const eventId = getEventIdFromURL();
-  getEventDetailsFromDB(eventId, function (event) {
-    displayEventDetails(event);
+  getEventDetailsFromDB(eventId, async function (event) {
+    try {
+      await displayEventDetails(event);
+    } catch (error) {
+      console.error("Error displaying event details:", error);
+    }
   });
 });
 
 let eventDetails;
 
 function displayEventDetails(event) {
-  eventDetails = event;
-  document.getElementById("eventName").textContent = event.name;
+  return new Promise((resolve, reject) => {
+    try {
+      eventDetails = event;
+      document.getElementById("eventName").textContent = event.name;
 
-  const balances = calculateBalances(event);
-  // const participantsContainer = document.getElementById('participants');
-  // participantsContainer.innerHTML = '<h2>Participants:</h2>';
-  // event.participants.forEach(participant => {
-  //     participantsContainer.innerHTML += `<div>${participant}</div>`;
-  // });
+      const balances = calculateBalances(event);
+      const participantsContainer = document.getElementById("participants");
+      participantsContainer.innerHTML = "<h2>Participantes y Balances</h2>";
+      participantsContainer.innerHTML += '<div class="participants-list">';
 
-  // participantsContainer.innerHTML += '<h2>Balances:</h2>';
-  // event.participants.forEach(participant => {
-  //     participantsContainer.innerHTML += `<div>${participant}: $${balances[participant]}</div>`;
-  // });
-  const participantsContainer = document.getElementById("participants");
-  participantsContainer.innerHTML = "<h2>Participantes y Balances</h2>";
-  participantsContainer.innerHTML += '<div class="participants-list">';
-
-  event.participants.forEach((participant) => {
-    const balanceClass = balances[participant] >= 0 ? "positive" : "negative"; // Determina la clase basada en el balance
-    participantsContainer.innerHTML += `
+      event.participants.forEach((participant) => {
+        const balanceClass =
+          balances[participant] >= 0 ? "positive" : "negative";
+        participantsContainer.innerHTML += `
           <div class="participant-row">
               <div class="participant-name">${participant}</div>
               <div class="participant-balance ${balanceClass}">$${balances[
-      participant
-    ].toFixed(2)}</div>
+          participant
+        ].toFixed(2)}</div>
           </div>`;
-  });
+      });
 
-  participantsContainer.innerHTML += "</div>";
+      participantsContainer.innerHTML += "</div>";
 
-  const transactionsContainer = document.getElementById("transactions");
-  transactionsContainer.innerHTML = "<h2>Transacciones</h2>";
-  event.transactions.forEach((transaction) => {
-    transactionsContainer.innerHTML += `
+      const transactionsContainer = document.getElementById("transactions");
+      transactionsContainer.innerHTML = "<h2>Transacciones</h2>";
+      event.transactions.forEach((transaction) => {
+        transactionsContainer.innerHTML += `
           <div class="transaction-card">
               <div class="transaction-details">
-                  
                   <div><i class="fas fa-user"></i> <span class="bold">${
                     transaction.paidBy
                   }</span> pagó</div>
                   <div><i class="fas fa-users"></i> Deuda de: <span class="bold">${transaction.owes.join(
                     ", "
                   )}</span></div>
-
                   <div>${transaction.description}</div>
               </div>
               <div class="transaction-amount">$${transaction.amount.toFixed(
                 2
               )}</div>
           </div>`;
+      });
+
+      resolve(); // Resolve the promise when the event details are successfully displayed
+    } catch (error) {
+      reject(error); // Reject the promise with the error if something goes wrong
+    }
   });
 }
 
