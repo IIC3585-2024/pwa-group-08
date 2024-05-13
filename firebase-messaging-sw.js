@@ -8,11 +8,13 @@ const firebaseConfig = {
   storageBucket: "lebron-money.appspot.com",
   messagingSenderId: "1048795771472",
   appId: "1:1048795771472:web:1993246b4c0bae6ca49755",
-  measurementId: "G-VE43M3YCT9"
+  measurementId: "G-VE43M3YCT9",
 };
 
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
+importScripts(
+  "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
+);
 
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
@@ -25,7 +27,7 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
-    '[firebase-messaging-sw.js] Received background message ',
+    "[firebase-messaging-sw.js] Received background message ",
     payload
   );
   // Customize notification here
@@ -78,10 +80,37 @@ self.addEventListener("install", function (event) {
 });
 
 // Se supone que estas funciones deberia hacer que se acctualice sola la pagina cuando haya conexion, pero no estan funcionando
-self.addEventListener("fetch", fetchEvent => {
-  fetchEvent.respondWith(
-    caches.match(fetchEvent.request).then(res => {
-      return res || fetch(fetchEvent.request)
-    })
-  )
-})
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  // Respond with cached resources if available, otherwise fetch from network
+  event.respondWith(cacheFirst(request));
+});
+
+async function cacheFirst(request) {
+  // Check if the request method is safe (GET or HEAD)
+
+  // Create a new URL without query parameters
+  const urlWithoutParams = new URL(request.url);
+  urlWithoutParams.search = "";
+
+  // Check if the requested resource is in the cache (ignoring query parameters)
+  const cachedResponse = await caches.match(urlWithoutParams);
+
+  // If it's in the cache, return the cached response
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  // If it's not in the cache, fetch from the network
+  try {
+    const response = await fetch(request);
+    // Clone the response because it can be consumed only onc
+    // Open the cache and add the fetched response for future use
+
+    return response;
+  } catch (error) {
+    // Handle fetch errors
+    console.error("Error fetching:", error);
+    throw error;
+  }
+}
