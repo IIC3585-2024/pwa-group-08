@@ -1,27 +1,3 @@
-// if(window.Notification) {
-//     if(Notification.permission === 'granted') {
-//       send_notification();
-//     } else if(Notification.permission !== 'denied') {
-//       Notification.requestPermission(permission => {
-//         if(permission === 'granted') {
-//            send_notification();
-//         }
-//       })
-//     }
-//   }
-
-//   function showNotification() {
-//     let notificationOptions = {
-//       body: 'Some Notification information',
-//       icon: '<>'
-//     }
-//     let notif = new Notification('My New Notification', notificationOptions);
-
-//     notif.onclick = () => {
-//       console.log('Notification clicked');
-//     }
-//   }
-
 function requestPermission() {
   console.log("Requesting permission...");
   Notification.requestPermission().then((permission) => {

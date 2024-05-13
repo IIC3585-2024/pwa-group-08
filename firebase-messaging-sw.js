@@ -1,6 +1,3 @@
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here. Other Firebase libraries
-// are not available in the service worker.
 const firebaseConfig = {
   apiKey: "AIzaSyCRw_yBOx-6O7XvGNpn7PRNShAr8aW9wxM",
   authDomain: "lebron-money.firebaseapp.com",
@@ -16,13 +13,8 @@ importScripts(
   "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
 );
 
-// Initialize the Firebase app in the service worker by passing in
-// your app's Firebase config object.
-// https://firebase.google.com/docs/web/setup#config-object
 firebase.initializeApp(firebaseConfig);
 
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
@@ -30,14 +22,6 @@ messaging.onBackgroundMessage((payload) => {
     "[firebase-messaging-sw.js] Received background message ",
     payload
   );
-  // Customize notification here
-  /* const notificationTitle = 'Background Message Title';
-  const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/firebase-logo.png'
-  };*/
-
-  // self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 self.addEventListener("install", function (event) {
@@ -73,43 +57,32 @@ self.addEventListener("install", function (event) {
         ]);
       } catch (error) {
         console.error("Cache installation failed:", error);
-        throw error; // Rethrow the error to indicate installation failure
+        throw error;
       }
     })()
   );
 });
 
-// Se supone que estas funciones deberia hacer que se acctualice sola la pagina cuando haya conexion, pero no estan funcionando
 self.addEventListener("fetch", (event) => {
   const { request } = event;
-  // Respond with cached resources if available, otherwise fetch from network
   event.respondWith(cacheFirst(request));
 });
 
 async function cacheFirst(request) {
-  // Check if the request method is safe (GET or HEAD)
 
-  // Create a new URL without query parameters
   const urlWithoutParams = new URL(request.url);
   urlWithoutParams.search = "";
 
-  // Check if the requested resource is in the cache (ignoring query parameters)
   const cachedResponse = await caches.match(urlWithoutParams);
 
-  // If it's in the cache, return the cached response
   if (cachedResponse) {
     return cachedResponse;
   }
 
-  // If it's not in the cache, fetch from the network
   try {
     const response = await fetch(request);
-    // Clone the response because it can be consumed only onc
-    // Open the cache and add the fetched response for future use
-
     return response;
   } catch (error) {
-    // Handle fetch errors
     console.error("Error fetching:", error);
     throw error;
   }
