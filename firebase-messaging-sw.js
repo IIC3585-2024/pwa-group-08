@@ -108,7 +108,14 @@ async function cacheFirst(request) {
     // Clone the response because it can be consumed only onc
     // Open the cache and add the fetched response for future use
 
+    const clonedResponse = response.clone();
+    // Open the cache and add the fetched response for future use
+    caches.open("oppo-pwa-cache-v1").then((cache) => {
+      cache.put(urlWithoutParams, clonedResponse);
+    });
+    
     return response;
+    
   } catch (error) {
     // Handle fetch errors
     console.error("Error fetching:", error);

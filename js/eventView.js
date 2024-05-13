@@ -75,10 +75,10 @@ function displayEventDetails(event) {
       });
 
       participantsContainer.innerHTML += "</div>";
-
       const transactionsContainer = document.getElementById("transactions");
       transactionsContainer.innerHTML = "<h2>Transacciones</h2>";
-      event.transactions.forEach((transaction) => {
+      event.transactions.forEach((transaction, index) => {
+        const paidStatus = transaction.paid ? "Pagado" : "No pagado";
         transactionsContainer.innerHTML += `
           <div class="transaction-card">
               <div class="transaction-details">
@@ -89,11 +89,28 @@ function displayEventDetails(event) {
                     ", "
                   )}</span></div>
                   <div>${transaction.description}</div>
+                  <div>${paidStatus}</div>
               </div>
               <div class="transaction-amount">$${transaction.amount.toFixed(
                 2
               )}</div>
+              <button class="payTransactionBtn" data-index="${index}">${!transaction.paid ? "marcar como pagado" : "pagado"}</button>
           </div>`;
+      });
+
+      // Attach event listeners to the pay buttons
+      document.querySelectorAll('.payTransactionBtn').forEach(button => {
+        button.addEventListener('click', function() {
+          const transactionIndex = parseInt(this.getAttribute('data-index'));
+          console.log(event);
+          markTransactionAsPaidInDB(event.id, transactionIndex, function(updatedEvent) {
+            if (updatedEvent) {
+              displayEventDetails(updatedEvent); // Refresh the event details after marking transaction as paid
+            } else {
+              console.error("Failed to mark transaction as paid.");
+            }
+          });
+        });
       });
 
       resolve(); // Resolve the promise when the event details are successfully displayed
@@ -206,6 +223,7 @@ document
       amount: amount,
       paidBy: paidBy,
       owes: owes,
+      paid:false
     };
 
     // Call the function to add transaction to event in IndexedDB
@@ -317,6 +335,10 @@ function calculateBalances(eventDetails) {
 
   // Iterate through each transaction and update balances accordingly
   eventDetails.transactions.forEach((transaction) => {
+    console.log(transaction.paid)
+    if (transaction.paid) {
+      return;
+    }
     const paidBy = transaction.paidBy;
     const amount = transaction.amount;
     const numOwes = transaction.owes.length;
