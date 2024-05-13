@@ -88,28 +88,26 @@ async function cacheFirst(request) {
   // Check if the request method is safe (GET or HEAD)
 
 
-  // Check if the requested resource is in the cache
-  const cachedResponse = await caches.match(request);
+  // Create a new URL without query parameters
+  const urlWithoutParams = new URL(request.url);
+  urlWithoutParams.search = '';
+
+  // Check if the requested resource is in the cache (ignoring query parameters)
+  const cachedResponse = await caches.match(urlWithoutParams);
 
   // If it's in the cache, return the cached response
   if (cachedResponse) {
     return cachedResponse;
   }
 
-  if (request.method !== 'GET' && request.method !== 'HEAD') {
-    // If the request method is not safe, simply fetch from the network without caching
-    return await fetch(request) ;
-  }
+
   
   // If it's not in the cache, fetch from the network
   try {
     const response = await fetch(request);
-    // Clone the response because it can be consumed only once
-    const clonedResponse = response.clone();
+    // Clone the response because it can be consumed only onc
     // Open the cache and add the fetched response for future use
-    caches.open("oppo-pwa-cache-v1").then((cache) => {
-      cache.put(request, clonedResponse);
-    });
+
     return response;
   } catch (error) {
     // Handle fetch errors
