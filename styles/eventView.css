@@ -1,6 +1,10 @@
-/* Styles for the transaction form container */
+body {
+  background-color: #c4dcf5;
+  font-family: 'Roboto', sans-serif;
+}
+
 .modal {
-  display: none; /* Hide the modal by default */
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -8,7 +12,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Overlay background */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -20,7 +24,6 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Close button style */
 .close {
   color: #aaa;
   float: right;
@@ -35,15 +38,14 @@
   cursor: pointer;
 }
 
-/* Styles for the info sections */
 .info-section {
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #ffffff;
 }
 
-/* Styles for the add transaction button */
 .btn {
   background-color: #4caf50;
   color: white;
@@ -51,35 +53,33 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s; /* Add smooth transition */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .btn:hover {
-  background-color: #45a049; /* Darker shade of green on hover */
+  background-color: #45a049;
 }
 
-/* Styles for the mark as paid button */
 .payTransactionBtn {
   margin-left: 20px;
-  background-color: #008cba; /* Blue color for the button */
+  background-color: #008cba;
   color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s; /* Add smooth transition */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .payTransactionBtn:hover:not(:disabled) {
-  background-color: #005f76; /* Darker shade of blue on hover */
+  background-color: #005f76;
 }
 
 .payTransactionBtn:disabled {
-  background-color: #b0bec5; /* Grey color for disabled button */
-  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
+  background-color: #b0bec5;
+  cursor: not-allowed;
 }
 
-/* Transaction form styles */
 #transactionForm {
   display: flex;
   flex-direction: column;
@@ -113,7 +113,6 @@
   background-color: #45a049;
 }
 
-/* Styles for owed checkboxes */
 #owesCheckboxes {
   display: flex;
   flex-wrap: wrap;
@@ -153,13 +152,13 @@
 }
 
 .positive {
-  background-color: #4caf50; /* Verde para balances positivos */
-  color: white; /* Texto blanco para mejor contraste */
+  background-color: #4caf50;
+  color: white;
 }
 
 .negative {
-  background-color: #f44336; /* Rojo para balances negativos */
-  color: white; /* Texto blanco para mejor contraste */
+  background-color: #f44336;
+  color: white;
 }
 
 .transaction-card {
@@ -167,38 +166,35 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   margin-bottom: 20px;
-  display: flex; /* Usamos flexbox para dividir la tarjeta en dos columnas */
+  display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
 .transaction-card[data-paid="true"] {
-  background-color: #e8a4be; /* Change to the color you want for paid transactions */
-}
+   background-color: #bee8ed;
+  }
 
 .transaction-card[data-paid="false"] {
-  background-color: #bee8ed; /* Fondo azul claro */ /* Change to the color you want for unpaid transactions */
+  background-color: #e8a4be;
 }
 
 .transaction-card:disabled {
-  background-color: #bee8ed; /* Fondo azul claro */
-  color: #000000; /* Texto negro para mejor contraste */
-  opacity: 0.5; /* Opacidad reducida para indicar que está deshabilitado */
+  background-color: #bee8ed;
+  color: #000000;
+  opacity: 0.5;
 }
 
-/* Styles for paid transactions */
 .paid-transaction {
-  background-color: #d4edda; /* Light green background for paid transactions */
-  border-color: #c3e6cb; /* Light green border color */
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }
 
-/* Styles for unpaid transactions */
 .unpaid-transaction {
-  background-color: #f8d7da; /* Light red background for unpaid transactions */
-  border-color: #f5c6cb; /* Light red border color */
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
 }
 
-/* Transaction details */
 .transaction-details {
   flex: 3;
 }
@@ -210,18 +206,16 @@
   font-weight: bold;
 }
 
-/* Add an icon for paid transactions */
 .paid-transaction .transaction-details::before {
-  content: "\2714"; /* Checkmark icon */
-  color: #155724; /* Dark green color */
+  content: "\2714";
+  color: #155724;
   font-size: 24px;
   margin-right: 10px;
 }
 
-/* Add an icon for unpaid transactions */
 .unpaid-transaction .transaction-details::before {
-  content: "\2716"; /* Cross icon */
-  color: #721c24; /* Dark red color */
+  content: "\2716";
+  color: #721c24;
   font-size: 24px;
   margin-right: 10px;
 }
@@ -231,21 +225,21 @@
 }
 
 .notification {
-  display: none; /* Oculto por defecto */
+  display: none;
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #4caf50; /* Verde */
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  z-index: 1000; /* Asegúrate de que no esté oculto detrás de otros elementos */
+  z-index: 1000;
 }
 
 .notification.show {
-  display: block; /* Mostrar la notificación */
-  animation: fadein 0.5s, fadeout 0.5s 2.5s; /* Aparece, permanece, y desaparece */
+  display: block;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 @keyframes fadein {
