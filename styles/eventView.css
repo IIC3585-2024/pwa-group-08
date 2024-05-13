@@ -69,8 +69,13 @@
   transition: background-color 0.3s, color 0.3s; /* Add smooth transition */
 }
 
-.payTransactionBtn:hover {
+.payTransactionBtn:hover:not(:disabled) {
   background-color: #005f76; /* Darker shade of blue on hover */
+}
+
+.payTransactionBtn:disabled {
+  background-color: #b0bec5; /* Grey color for disabled button */
+  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
 }
 
 /* Transaction form styles */

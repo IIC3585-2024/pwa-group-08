@@ -94,22 +94,28 @@ function displayEventDetails(event) {
               <div class="transaction-amount">$${transaction.amount.toFixed(
                 2
               )}</div>
-              <button class="payTransactionBtn" data-index="${index}">${!transaction.paid ? "marcar como pagado" : "pagado"}</button>
-          </div>`;
+              <button class="payTransactionBtn" data-index="${index}" ${
+          transaction.paid ? "disabled" : ""
+        }>${!transaction.paid ? "marcar como pagado" : "pagado"}</button>
+              </div>`;
       });
 
       // Attach event listeners to the pay buttons
-      document.querySelectorAll('.payTransactionBtn').forEach(button => {
-        button.addEventListener('click', function() {
-          const transactionIndex = parseInt(this.getAttribute('data-index'));
+      document.querySelectorAll(".payTransactionBtn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const transactionIndex = parseInt(this.getAttribute("data-index"));
           console.log(event);
-          markTransactionAsPaidInDB(event.id, transactionIndex, function(updatedEvent) {
-            if (updatedEvent) {
-              displayEventDetails(updatedEvent); // Refresh the event details after marking transaction as paid
-            } else {
-              console.error("Failed to mark transaction as paid.");
+          markTransactionAsPaidInDB(
+            event.id,
+            transactionIndex,
+            function (updatedEvent) {
+              if (updatedEvent) {
+                displayEventDetails(updatedEvent); // Refresh the event details after marking transaction as paid
+              } else {
+                console.error("Failed to mark transaction as paid.");
+              }
             }
-          });
+          );
         });
       });
 
@@ -223,7 +229,7 @@ document
       amount: amount,
       paidBy: paidBy,
       owes: owes,
-      paid:false
+      paid: false,
     };
 
     // Call the function to add transaction to event in IndexedDB
@@ -294,10 +300,10 @@ document
       });
   });
 
-  onMessage(messaging, (payload) => {
-    console.log("Message received. ", payload.notification.body);
-    showNotification(payload.notification.body);
-  });
+onMessage(messaging, (payload) => {
+  console.log("Message received. ", payload.notification.body);
+  showNotification(payload.notification.body);
+});
 
 function showNotification(body) {
   const notification = document.getElementById("notification");
@@ -335,7 +341,7 @@ function calculateBalances(eventDetails) {
 
   // Iterate through each transaction and update balances accordingly
   eventDetails.transactions.forEach((transaction) => {
-    console.log(transaction.paid)
+    console.log(transaction.paid);
     if (transaction.paid) {
       return;
     }
