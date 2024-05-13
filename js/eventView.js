@@ -75,12 +75,12 @@ function displayEventDetails(event) {
       });
 
       participantsContainer.innerHTML += "</div>";
-
       const transactionsContainer = document.getElementById("transactions");
       transactionsContainer.innerHTML = "<h2>Transacciones</h2>";
-      event.transactions.forEach((transaction) => {
+      event.transactions.forEach((transaction, index) => {
+        const paidStatus = transaction.paid ? "Pagado" : "No pagado";
         transactionsContainer.innerHTML += `
-          <div class="transaction-card">
+          <div class="transaction-card" data-paid=${transaction.paid}>
               <div class="transaction-details">
                   <div><i class="fas fa-user"></i> <span class="bold">${
                     transaction.paidBy
@@ -89,11 +89,34 @@ function displayEventDetails(event) {
                     ", "
                   )}</span></div>
                   <div>${transaction.description}</div>
+                  <div>${paidStatus}</div>
               </div>
               <div class="transaction-amount">$${transaction.amount.toFixed(
                 2
               )}</div>
-          </div>`;
+              <button class="payTransactionBtn" data-index="${index}" ${
+          transaction.paid ? "disabled" : ""
+        }>${!transaction.paid ? "marcar como pagado" : "pagado"}</button>
+              </div>`;
+      });
+
+      // Attach event listeners to the pay buttons
+      document.querySelectorAll(".payTransactionBtn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const transactionIndex = parseInt(this.getAttribute("data-index"));
+          console.log(event);
+          markTransactionAsPaidInDB(
+            event.id,
+            transactionIndex,
+            function (updatedEvent) {
+              if (updatedEvent) {
+                displayEventDetails(updatedEvent); // Refresh the event details after marking transaction as paid
+              } else {
+                console.error("Failed to mark transaction as paid.");
+              }
+            }
+          );
+        });
       });
 
       resolve(); // Resolve the promise when the event details are successfully displayed
@@ -206,6 +229,7 @@ document
       amount: amount,
       paidBy: paidBy,
       owes: owes,
+      paid: false,
     };
 
     // Call the function to add transaction to event in IndexedDB
@@ -276,10 +300,10 @@ document
       });
   });
 
-  onMessage(messaging, (payload) => {
-    console.log("Message received. ", payload.notification.body);
-    showNotification(payload.notification.body);
-  });
+onMessage(messaging, (payload) => {
+  console.log("Message received. ", payload.notification.body);
+  showNotification(payload.notification.body);
+});
 
 function showNotification(body) {
   const notification = document.getElementById("notification");
@@ -317,6 +341,10 @@ function calculateBalances(eventDetails) {
 
   // Iterate through each transaction and update balances accordingly
   eventDetails.transactions.forEach((transaction) => {
+    console.log(transaction.paid);
+    if (transaction.paid) {
+      return;
+    }
     const paidBy = transaction.paidBy;
     const amount = transaction.amount;
     const numOwes = transaction.owes.length;

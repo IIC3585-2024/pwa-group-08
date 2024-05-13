@@ -141,6 +141,7 @@ function getEventDetailsFromDB(eventId, callback) {
     if (eventData) {
       // Extract event details
       const eventDetails = {
+        id: eventData.id,
         name: eventData.name,
         participants: eventData.participants,
         transactions: eventData.transactions || [], // Handle case where transactions array might be missing
@@ -213,6 +214,48 @@ function addTransactionToEventInDB(eventId, newTransactionData, callback) {
         console.error("Error adding transaction to event:", event.target.error);
         callback(null);
       };
+    } else {
+      console.error("Event not found for ID:", eventId);
+      callback(null);
+    }
+  };
+
+  getRequest.onerror = function (event) {
+    console.error("Error fetching event record:", event.target.error);
+    callback(null);
+  };
+}
+
+function markTransactionAsPaidInDB(eventId, transactionIndex, callback) {
+  const transaction = db.transaction("events", "readwrite");
+  const store = transaction.objectStore("events");
+
+  // Retrieve the event from the database
+  const getRequest = store.get(eventId);
+
+  getRequest.onsuccess = function (event) {
+    const eventRecord = event.target.result;
+    console.log(eventRecord, "eventRecord");
+    if (eventRecord) {
+      // Check if the transaction index is valid
+      if (transactionIndex >= 0 && transactionIndex < eventRecord.transactions.length) {
+        // Mark the transaction as paid
+        eventRecord.transactions[transactionIndex].paid = true;
+        
+        // Update the event in the database
+        const updateRequest = store.put(eventRecord);
+        updateRequest.onsuccess = function () {
+          console.log("Transaction marked as paid in event:", eventId);
+          callback(eventRecord);
+        };
+        updateRequest.onerror = function (event) {
+          console.error("Error marking transaction as paid in event:", event.target.error);
+          callback(null);
+        };
+      } else {
+        console.error("Invalid transaction index:", transactionIndex);
+        callback(null);
+      }
     } else {
       console.error("Event not found for ID:", eventId);
       callback(null);
