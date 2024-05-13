@@ -67,11 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Call the addEventToDB function from indexedDB.js
     try {
       const eventId = await addEventToDB(eventName, participants);
       console.log("Event created:", eventName, participants);
-      // Navigate to eventView.html with the newly created event's ID as query parameter
       window.location.href = `eventView.html?id=${eventId}`;
     } catch (error) {
       console.error("Error creating event:", error);
