@@ -1,12 +1,25 @@
+body {
+  background-color: #c4dcf5;
+  font-family: 'Roboto', sans-serif;
+}
+
 .headlineContainer {
   padding: 100px 20px;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.headlineContainer h2,
+.headlineContainer h2 {
+  background: #007bff;
+  display: inline-block;
+  padding: 15px 35px;
+  font-size: 50px;
+  border-radius: 4px;
+  color: white;
+}
+
 .headlineContainer h3 {
   color: #343a40;
 }
@@ -63,11 +76,11 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
+  align-items: center;
 }
 
 .event-item {
-  background-color: #4caf50; /* Verde claro, puedes cambiar el color según tu diseño */
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   margin-bottom: 10px;
@@ -77,10 +90,10 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 80%; /* Ajusta este valor para cambiar el ancho de los elementos */
-  max-width: 500px; /* Establece un ancho máximo para los elementos */
+  width: 80%;
+  max-width: 500px;
 }
 
 .event-item:hover {
-  background-color: #367c39; /* Un tono más oscuro al pasar el mouse */
+  background-color: #367c39;
 }
