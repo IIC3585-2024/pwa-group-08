@@ -80,7 +80,7 @@ function displayEventDetails(event) {
       event.transactions.forEach((transaction, index) => {
         const paidStatus = transaction.paid ? "Pagado" : "No pagado";
         transactionsContainer.innerHTML += `
-          <div class="transaction-card">
+          <div class="transaction-card" data-paid=${transaction.paid}>
               <div class="transaction-details">
                   <div><i class="fas fa-user"></i> <span class="bold">${
                     transaction.paidBy

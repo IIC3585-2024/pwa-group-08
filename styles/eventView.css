@@ -60,6 +60,7 @@
 
 /* Styles for the mark as paid button */
 .payTransactionBtn {
+  margin-left: 20px;
   background-color: #008cba; /* Blue color for the button */
   color: white;
   padding: 8px 16px;
@@ -161,15 +162,28 @@
   color: white; /* Texto blanco para mejor contraste */
 }
 
-/* Styles for the transaction card */
 .transaction-card {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   margin-bottom: 20px;
-  display: flex;
+  display: flex; /* Usamos flexbox para dividir la tarjeta en dos columnas */
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.transaction-card[data-paid="true"] {
+  background-color: #e8a4be; /* Change to the color you want for paid transactions */
+}
+
+.transaction-card[data-paid="false"] {
+  background-color: #bee8ed; /* Fondo azul claro */ /* Change to the color you want for unpaid transactions */
+}
+
+.transaction-card:disabled {
+  background-color: #bee8ed; /* Fondo azul claro */
+  color: #000000; /* Texto negro para mejor contraste */
+  opacity: 0.5; /* Opacidad reducida para indicar que está deshabilitado */
 }
 
 /* Styles for paid transactions */
